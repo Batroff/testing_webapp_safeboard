@@ -12,7 +12,7 @@ class RegPage(BasePage):
                            keys=userdata['name'])
 
         self.keys_to_input(locator=self.locators.INPUT_LOGIN,
-                           keys=userdata['login'])
+                           keys=userdata['username'])
 
         self.keys_to_input(locator=self.locators.INPUT_PASSWORD,
                            keys=userdata['password'])

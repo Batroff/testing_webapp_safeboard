@@ -1,9 +1,11 @@
+from faker import Faker
 from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
 
 import pytest
 from ui.pages.home_page import HomePage
-from ui.pages.reg_page import RegPage
+
+fake = Faker()
 
 
 @pytest.fixture
@@ -11,9 +13,15 @@ def home_page(driver):
     return HomePage(driver=driver)
 
 
-@pytest.fixture
-def reg_page(driver):
-    return RegPage(driver=driver)
+@pytest.fixture(scope='function')
+def userdata() -> dict:
+    password = fake.password(length=fake.random_int(min=5, max=200))
+    return {
+        'name': fake.name(),
+        'username': fake.bothify('???#?' * fake.random_int(min=1, max=100)),
+        'password': password,
+        'confirm_password': password
+    }
 
 
 @pytest.fixture(scope='function')

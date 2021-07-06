@@ -2,6 +2,7 @@ from ui.locators.home_locators import HomePageLocators
 from ui.pages.base_page import BasePage
 from ui.pages.books_page import BooksPage
 from ui.pages.cart_page import CartPage
+from ui.pages.login_page import LoginPage
 from ui.pages.reg_page import RegPage
 
 
@@ -19,3 +20,7 @@ class HomePage(BasePage):
     def go_to_cart_page(self):
         self.click(self.locators.BTN_CART)
         return CartPage(driver=self.driver)
+
+    def go_to_login_page(self):
+        self.click(self.locators.BTN_LOGIN)
+        return LoginPage(driver=self.driver)

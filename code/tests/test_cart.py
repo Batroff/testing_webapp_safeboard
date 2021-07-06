@@ -1,5 +1,3 @@
-import time
-
 import pytest
 from selenium.common.exceptions import NoSuchElementException
 
@@ -15,7 +13,6 @@ class TestCart(Base):
     """
 
     authorize = True
-
     titles = [
         'Тестирование DOT COM',
         'A Friendly Introduction to Software Testing',
@@ -29,14 +26,12 @@ class TestCart(Base):
 
     @pytest.mark.parametrize('title', titles, ids=['1', '2', '3', '4', '5'])
     def test_book_price(self, title):
-        book = self.books_page.get_book_by_title(title)
-        price = self.books_page.get_book_price(book)
+        price = self.books_page.get_book_info(title)['price']
 
         self.books_page.add_book_to_cart(title)
         cart_page = self.home_page.go_to_cart_page()
 
-        cart_book = self.books_page.get_book_by_title(title)
-        cart_price = cart_page.get_book_price(cart_book)
+        cart_price = cart_page.get_book_price(title)
         assert price == cart_price
 
         final_price = cart_page.get_final_price()
@@ -46,7 +41,6 @@ class TestCart(Base):
     def test_update_book_quantity(self):
         title = self.titles[0]
 
-        book = self.books_page.get_book_by_title(title)
         self.books_page.add_book_to_cart(title)
 
         cart_page = self.home_page.go_to_cart_page()
