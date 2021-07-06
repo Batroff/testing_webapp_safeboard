@@ -1,0 +1,14 @@
+pytest
+py
+pip
+attrs
+toml
+pluggy
+iniconfig
+selenium
+pyparsing
+setuptools
+faker
+webdriver-manager
+pytest-xdist
+allure-pytest
