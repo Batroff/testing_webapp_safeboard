@@ -38,8 +38,8 @@ class TestRegistration(Base):
         '',
         fake.password(length=4),
         fake.lexify('????'),
-        fake.lexify('####'),
-        fake.numerify('????????'),
+        fake.numerify('####'),
+        fake.lexify('???????'),
         fake.numerify('########'),
     ], ids=['Empty', '4 mixed', '4 symbols', '4 numbers', 'Without number', 'Without letter'])
     def test_wrong_password(self, userdata, password):

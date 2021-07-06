@@ -9,7 +9,7 @@ class Base:
     authorize = False
 
     @pytest.fixture(scope='function', autouse=True)
-    def setup(self, driver, config, request: FixtureRequest, cookies):
+    def setup(self, driver, config, request: FixtureRequest, cookies, ui_report):
         self.driver = driver
 
         if self.authorize:

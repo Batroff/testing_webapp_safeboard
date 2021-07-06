@@ -26,7 +26,7 @@ class TestCart(Base):
 
     @pytest.mark.parametrize('title', titles, ids=['1', '2', '3', '4', '5'])
     def test_book_price(self, title):
-        price = self.books_page.get_book_info(title)['price']
+        price = float(self.books_page.get_book_info(title)['price'].rstrip().split(' ')[0])
 
         self.books_page.add_book_to_cart(title)
         cart_page = self.home_page.go_to_cart_page()

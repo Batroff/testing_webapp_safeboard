@@ -1,3 +1,6 @@
+import os
+
+import allure
 from faker import Faker
 from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
@@ -26,15 +29,6 @@ def userdata() -> dict:
 
 @pytest.fixture(scope='function')
 def driver(config):
-    # caps = {
-    #     'browserName': 'chrome',
-    #     'version': '91.0',
-    #     'selenoid:options': {
-    #         'enableVNC': True
-    #     }
-    # }
-    # driver = webdriver.Remote(command_executor='http://127.0.0.1:4444/wd/hub',
-    #                           desired_capabilities=caps)
     driver = webdriver.Chrome(ChromeDriverManager().install())
 
     driver.get('http://127.0.0.1:8080/')
@@ -43,3 +37,21 @@ def driver(config):
     yield driver
 
     driver.quit()
+
+
+@pytest.fixture(scope='function')
+def ui_report(driver, request, test_dir):
+    failed_tests_count = request.session.testsfailed
+    yield
+    if request.session.testsfailed > failed_tests_count:
+        screenshot_file = os.path.join(test_dir, 'failure.png')
+        driver.get_screenshot_as_file(screenshot_file)
+        allure.attach.file(screenshot_file, 'failure.png', attachment_type=allure.attachment_type.PNG)
+
+        browser_logfile = os.path.join(test_dir, 'browser.log')
+        with open(browser_logfile, 'w') as f:
+            for i in driver.get_log('browser'):
+                f.write(f"{i['level']} - {i['source']}\n{i['message']}\n\n")
+
+        with open(browser_logfile, 'r') as f:
+            allure.attach(f.read(), 'browser.log', attachment_type=allure.attachment_type.TEXT)
